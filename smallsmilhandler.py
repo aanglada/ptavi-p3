@@ -21,12 +21,12 @@ class SmallSMILHandler(ContentHandler):
 
         def startElement(self, name, attrs):
 
-            self.diccionario = {}
             if name in self.tags:
-                self.diccionario['etiqueta'] = name
+                diccionario = {}
+                diccionario['tag'] = name
                 for atributo in self.atributos[name]:
-                    self.diccionario[atributo] = attrs.get(atributo, "")
-                self.elementos.append(self.diccionario)
+                    diccionario[atributo] = attrs.get(atributo, "")
+                self.elementos.append(diccionario)
 
         def get_tags(self):
 
