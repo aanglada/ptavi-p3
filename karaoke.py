@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import json
 import sys
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
@@ -15,6 +16,11 @@ def __str__(lista):
                 elementos += ("\t", etiqueta, '="', etiquetas[etiqueta], '"')
         print(etiquetas["element"], "".join(elementos))
 
+
+def to_json(lista, fichero):
+    fichjson = fichero.split('.')[0] + '.json'
+    json.dump(lista, open(fichjson, 'w'))
+
 if __name__ == "__main__":
 
     try:
@@ -25,5 +31,6 @@ if __name__ == "__main__":
     parser = make_parser()
     sHandler = SmallSMILHandler()
     parser.setContentHandler(sHandler)
-    parser.parse(fichero)
+    parser.parse(open(fichero))
     __str__(sHandler.get_tags())
+    to_json(sHandler.get_tags(), fichero)
