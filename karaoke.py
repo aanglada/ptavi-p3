@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import json
-import sys
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 from smallsmilhandler import SmallSMILHandler
+from urllib.request import urlretrieve
+import json
+import sys
 
 
 def __str__(lista):
@@ -21,6 +22,14 @@ def to_json(lista, fichero):
     fichjson = fichero.split('.')[0] + '.json'
     json.dump(lista, open(fichjson, 'w'))
 
+
+def downloadLista(lista):
+    for etiquetas in lista:
+        for tag in etiquetas:
+            if tag == 'src' and etiquetas[tag].startswith('http://'):
+                urlretrieve(etiquetas[tag], etiquetas[tag].split('/')[-1])
+
+
 if __name__ == "__main__":
 
     try:
@@ -34,3 +43,4 @@ if __name__ == "__main__":
     parser.parse(open(fichero))
     __str__(sHandler.get_tags())
     to_json(sHandler.get_tags(), fichero)
+    downloadLista(sHandler.get_tags())
